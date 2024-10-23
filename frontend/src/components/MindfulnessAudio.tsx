@@ -1,12 +1,12 @@
 import { useRef, useState, useEffect } from 'react';
 import './MindfulnessAudio.css';
 
-const MindfulnessAudio = () => {
+const MindfulnessAudio = ({ onFinish }: { onFinish: () => void }) => {
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
-    const [showButton, setShowButton] = useState(false); // Nuevo estado para el botón
+    const [showButton, setShowButton] = useState(false);
 
     useEffect(() => {
         const audio = audioRef.current;
@@ -20,12 +20,12 @@ const MindfulnessAudio = () => {
             };
 
             const handleAudioEnd = () => {
-                setShowButton(true); // Mostrar botón cuando termine el audio
+                setShowButton(true); // Solo muestra el botón al final del audio
             };
 
             audio.addEventListener('loadedmetadata', handleLoadedMetadata);
             audio.addEventListener('timeupdate', handleTimeUpdate);
-            audio.addEventListener('ended', handleAudioEnd); // Escuchar evento 'ended'
+            audio.addEventListener('ended', handleAudioEnd);
 
             return () => {
                 audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
@@ -100,7 +100,7 @@ const MindfulnessAudio = () => {
             </div>
 
             {showButton && (
-                <button className="study-button">Empezar a estudiar 📖</button>
+                <button className="study-button" onClick={onFinish}>Empezar a estudiar 📖</button>
             )}
         </div>
     );

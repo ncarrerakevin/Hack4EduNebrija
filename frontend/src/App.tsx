@@ -3,14 +3,19 @@ import Welcome from './components/Welcome';
 import SurveyIntro from './components/SurveyIntro';
 import SurveyQuestion from './components/SurveyQuestion';
 import MindfulnessStart from './components/MindfulnessStart';
-import MindfulnessAudio from './components/MindfulnessAudio'; // Importa el reproductor de audio
+import MindfulnessAudio from './components/MindfulnessAudio';
+import StudyingScreen from './components/StudyingScreen';
+import CompletionScreen from './components/CompletionScreen'; // Importa la nueva pantalla
 
 function App() {
     const [showWelcome, setShowWelcome] = useState(true);
     const [showSurveyIntro, setShowSurveyIntro] = useState(false);
     const [showSurvey, setShowSurvey] = useState(false);
     const [showMindfulnessStart, setShowMindfulnessStart] = useState(false);
-    const [showMindfulnessAudio, setShowMindfulnessAudio] = useState(false); // Añade el estado para el reproductor de audio
+    const [showMindfulnessAudio, setShowMindfulnessAudio] = useState(false);
+    const [showStudyingScreen, setShowStudyingScreen] = useState(false);
+    const [showCompletionScreen, setShowCompletionScreen] = useState(false); // Añade el estado para la pantalla de finalización
+
     const [currentStep, setCurrentStep] = useState(1);
     const totalSteps = 5;
 
@@ -36,8 +41,8 @@ function App() {
         if (currentStep < totalSteps) {
             setCurrentStep(currentStep + 1);
         } else {
-            setShowSurvey(false); // Oculta la encuesta
-            setShowMindfulnessStart(true); // Muestra la pantalla de Mindfulness
+            setShowSurvey(false);
+            setShowMindfulnessStart(true);
         }
     };
 
@@ -47,10 +52,23 @@ function App() {
         }
     };
 
-    // Maneja el inicio del audio después de la pantalla de Mindfulness Start
     const handleStartMindfulnessAudio = () => {
-        setShowMindfulnessStart(false); // Oculta la pantalla de inicio de mindfulness
-        setShowMindfulnessAudio(true); // Muestra el reproductor de audio
+        setShowMindfulnessStart(false);
+        setShowMindfulnessAudio(true);
+    };
+
+    const handleAudioEnd = () => {
+        setShowMindfulnessAudio(false);
+        setShowStudyingScreen(true);
+    };
+
+    const handleFinishStudy = () => {
+        setShowStudyingScreen(false); // Oculta la pantalla de "Estudiando"
+        setShowCompletionScreen(true); // Muestra la pantalla de finalización
+    };
+
+    const handleQuestionnaire = () => {
+        alert("Inicia el cuestionario!"); // Acción para iniciar el cuestionario
     };
 
     return (
@@ -68,7 +86,9 @@ function App() {
                 />
             )}
             {showMindfulnessStart && <MindfulnessStart onStart={handleStartMindfulnessAudio} />}
-            {showMindfulnessAudio && <MindfulnessAudio />} {/* Muestra el reproductor de audio */}
+            {showMindfulnessAudio && <MindfulnessAudio onFinish={handleAudioEnd} />}
+            {showStudyingScreen && <StudyingScreen onFinish={handleFinishStudy} />}
+            {showCompletionScreen && <CompletionScreen onQuestionnaire={handleQuestionnaire} />}
         </div>
     );
 }

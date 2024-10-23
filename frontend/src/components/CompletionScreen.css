@@ -1,0 +1,45 @@
+/* Asegúrate de que el html y el body ocupen el 100% de la altura de la pantalla */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilo para la pantalla de CompletionScreen */
+.completion-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw; /* Asegura que el contenedor cubra todo el ancho de la pantalla */
+    background: linear-gradient(to bottom right, #e0f7fa, #fce4ec);
+    text-align: center;
+}
+
+.completion-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+h2 {
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+}
+
+.completion-button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.completion-button:hover {
+    background-color: #0056b3;
+}
