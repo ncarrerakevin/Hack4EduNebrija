@@ -5,7 +5,8 @@ import SurveyQuestion from './components/SurveyQuestion';
 import MindfulnessStart from './components/MindfulnessStart';
 import MindfulnessAudio from './components/MindfulnessAudio';
 import StudyingScreen from './components/StudyingScreen';
-import CompletionScreen from './components/CompletionScreen'; // Importa la nueva pantalla
+import CompletionScreen from './components/CompletionScreen';
+import LikertQuestion from './components/LikertQuestion';  // Importa la nueva pantalla
 
 function App() {
     const [showWelcome, setShowWelcome] = useState(true);
@@ -14,7 +15,8 @@ function App() {
     const [showMindfulnessStart, setShowMindfulnessStart] = useState(false);
     const [showMindfulnessAudio, setShowMindfulnessAudio] = useState(false);
     const [showStudyingScreen, setShowStudyingScreen] = useState(false);
-    const [showCompletionScreen, setShowCompletionScreen] = useState(false); // Añade el estado para la pantalla de finalización
+    const [showCompletionScreen, setShowCompletionScreen] = useState(false);
+    const [showLikertQuestion, setShowLikertQuestion] = useState(false);  // Estado para la pantalla Likert
 
     const [currentStep, setCurrentStep] = useState(1);
     const totalSteps = 5;
@@ -63,12 +65,13 @@ function App() {
     };
 
     const handleFinishStudy = () => {
-        setShowStudyingScreen(false); // Oculta la pantalla de "Estudiando"
-        setShowCompletionScreen(true); // Muestra la pantalla de finalización
+        setShowStudyingScreen(false);
+        setShowCompletionScreen(true);
     };
 
-    const handleQuestionnaire = () => {
-        alert("Inicia el cuestionario!"); // Acción para iniciar el cuestionario
+    const handleQuestionnaireStart = () => {
+        setShowCompletionScreen(false);
+        setShowLikertQuestion(true);  // Muestra la pantalla Likert
     };
 
     return (
@@ -88,7 +91,8 @@ function App() {
             {showMindfulnessStart && <MindfulnessStart onStart={handleStartMindfulnessAudio} />}
             {showMindfulnessAudio && <MindfulnessAudio onFinish={handleAudioEnd} />}
             {showStudyingScreen && <StudyingScreen onFinish={handleFinishStudy} />}
-            {showCompletionScreen && <CompletionScreen onQuestionnaire={handleQuestionnaire} />}
+            {showCompletionScreen && <CompletionScreen onQuestionnaire={handleQuestionnaireStart} />}
+            {showLikertQuestion && <LikertQuestion onNext={() => alert('Cuestionario completado')} />}  {/* Muestra la escala Likert */}
         </div>
     );
 }

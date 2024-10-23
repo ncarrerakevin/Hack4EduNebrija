@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
 import './SurveyQuestion.css';
 
-const SurveyQuestion = ({ onNext, onPrevious, questionText, currentStep, totalSteps, questionType }: any) => {
+interface SurveyQuestionProps {
+    onNext: () => void;
+    onPrevious: () => void;
+    questionText: string;
+    currentStep: number;
+    totalSteps: number;
+    questionType: 'options' | 'numeric';
+}
+
+const SurveyQuestion: React.FC<SurveyQuestionProps> = ({ onNext, onPrevious, questionText, currentStep, totalSteps, questionType }) => {
     const [selectedOption, setSelectedOption] = useState('');
     const [numericInput, setNumericInput] = useState<number | undefined>();
 
@@ -38,7 +47,7 @@ const SurveyQuestion = ({ onNext, onPrevious, questionText, currentStep, totalSt
                 <h2>{questionText}</h2>
 
                 {questionType === 'options' && (
-                    <div className="options">
+                    <div className="survey-options">
                         <label>
                             <input
                                 type="radio"
