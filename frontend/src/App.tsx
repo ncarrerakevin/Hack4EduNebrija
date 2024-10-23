@@ -9,6 +9,8 @@ import CompletionScreen from './components/CompletionScreen';
 import Login from './components/Login';
 import Register from './components/Register';
 import LikertQuestion from './components/LikertQuestion'; // Importa LikertQuestion
+import ShortMindfulnessProcess1 from './components/ShortMindfulnessProcess1'; // Importa ShortMindfulnessProcess1
+import ShortMindfulnessProcess2 from './components/ShortMindfulnessProcess2'; // Importa ShortMindfulnessProcess2
 import { useState } from 'react';
 
 // Define el tipo para 'options' y 'numeric'
@@ -71,10 +73,18 @@ function App() {
                             questionText="Del 1 al 7, ¿cuánto de focalizada está tu atención en la tarea que vas a realizar?"
                             currentStep={1}
                             totalSteps={1}
-                            onNext={() => alert('¡Siguiente!')} // Ajusta el comportamiento de "Siguiente" aquí
-                            onPrevious={() => {}} // Pasa una función vacía si no la necesitas
+                            onNext={() => window.location.href = '/short-mindfulness'} // Navegar a la pantalla de Mindfulness corta
+                            onPrevious={() => {}}
                         />
                     }
+                />
+                <Route
+                    path="/short-mindfulness"
+                    element={<ShortMindfulnessProcess1 onNext={() => window.location.href = '/short-mindfulness-2'} />} // Aquí defines la navegación después de la primera fase
+                />
+                <Route
+                    path="/short-mindfulness-2"
+                    element={<ShortMindfulnessProcess2 onNext={() => window.location.href = '/mindfulness-audio'} />} // Segunda fase
                 />
             </Routes>
         </Router>
