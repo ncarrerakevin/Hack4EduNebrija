@@ -8,6 +8,7 @@ import StudyingScreen from './components/StudyingScreen';
 import CompletionScreen from './components/CompletionScreen';
 import Login from './components/Login';
 import Register from './components/Register';
+import LikertQuestion from './components/LikertQuestion'; // Importa LikertQuestion
 import { useState } from 'react';
 
 // Define el tipo para 'options' y 'numeric'
@@ -62,7 +63,19 @@ function App() {
                 <Route path="/mindfulness" element={<MindfulnessStart onStart={() => window.location.href = '/mindfulness-audio'} />} />
                 <Route path="/mindfulness-audio" element={<MindfulnessAudio onFinish={() => window.location.href = '/studying'} />} />
                 <Route path="/studying" element={<StudyingScreen onFinish={() => window.location.href = '/completion'} />} />
-                <Route path="/completion" element={<CompletionScreen onQuestionnaire={() => window.location.href = '/survey'} />} />
+                <Route path="/completion" element={<CompletionScreen onQuestionnaire={() => window.location.href = '/likert-question'} />} />
+                <Route
+                    path="/likert-question"
+                    element={
+                        <LikertQuestion
+                            questionText="Del 1 al 7, ¿cuánto de focalizada está tu atención en la tarea que vas a realizar?"
+                            currentStep={1}
+                            totalSteps={1}
+                            onNext={() => alert('¡Siguiente!')} // Ajusta el comportamiento de "Siguiente" aquí
+                            onPrevious={() => {}} // Pasa una función vacía si no la necesitas
+                        />
+                    }
+                />
             </Routes>
         </Router>
     );
