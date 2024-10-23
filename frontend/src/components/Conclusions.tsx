@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
-import './Conclusions.css'; // Importa el archivo de estilos
+import rehypeRaw from 'rehype-raw';
+import rehypeHighlight from 'rehype-highlight';
+import rehypeSlug from 'rehype-slug';
+import remarkGfm from 'remark-gfm';import './Conclusions.css'; // Importa el archivo de estilos
 import { useSurvey } from '../context/useSurvey'; // Importa useSurvey
 
 const Conclusions = () => {
@@ -63,7 +66,19 @@ const Conclusions = () => {
                 <img src="/openai-logo.png" alt="OpenAI Logo" className="openai-logo" />
                 <h2>Perfil y Recomendaciones</h2>
             </div>
-            <ReactMarkdown className="conclusions-text">{conclusions}</ReactMarkdown>
+            <ReactMarkdown
+                className="conclusions-text"
+                rehypePlugins={[rehypeRaw, rehypeHighlight, rehypeSlug]}
+                remarkPlugins={[remarkGfm]} // Agrega soporte para tablas, checkboxes y más
+                components={{
+                    h1: ({ ...props }) => <h1 {...props} style={{ color: '#007bff' }} />, // Custom H1 style
+                    strong: ({ ...props }) => <strong {...props} style={{ fontWeight: 'bold' }} />, // Negritas
+                    p: ({ ...props }) => <p {...props} style={{ margin: '10px 0', lineHeight: '1.6' }} />, // Párrafo
+                    li: ({ ...props }) => <li {...props} style={{ paddingLeft: '10px' }} /> // Estilo de lista
+                }}
+            >
+                {conclusions.trim()}
+            </ReactMarkdown>
         </div>
     );
 };
