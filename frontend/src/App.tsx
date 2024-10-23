@@ -1,35 +1,43 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from "react";
+import Auth from "./components/Auth";
+import Register from "./components/Register";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App: React.FC = () => {
+  const [isRegistering, setIsRegistering] = useState(false);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="flex h-screen w-screen">
+      {/* Imagen de portada */}
+      <div className="hidden lg:block lg:w-1/2 h-full">
+        <img
+          src="/portada.png"
+          alt="Portada"
+          className="w-full h-full object-contain"
+        />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
 
-export default App
+      {/* Columna del formulario */}
+      <div className="w-full lg:w-1/2 h-full flex items-center justify-center bg-white">
+        <div className="w-full max-w-md m-auto bg-white rounded-lg shadow-lg py-10 px-16">
+          {isRegistering ? (
+            <Register />
+          ) : (
+            <Auth />
+          )}
+          <div className="text-center mt-4">
+            <button
+              className="text-blue-500 underline"
+              onClick={() => setIsRegistering(!isRegistering)}
+            >
+              {isRegistering
+                ? "¿Ya tienes cuenta? Iniciar sesión"
+                : "¿No tienes cuenta? Regístrate ahora"}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default App;
