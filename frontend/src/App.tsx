@@ -9,6 +9,7 @@ import CompletionScreen from './components/CompletionScreen';
 import Login from './components/Login';
 import Register from './components/Register';
 import LikertQuestion from './components/LikertQuestion'; // Importa LikertQuestion
+import Conclusions from './components/Conclusions';
 import { useState } from 'react';
 import { SurveyProvider } from './context/SurveyContext'; // Importa el contexto
 
@@ -78,6 +79,8 @@ function App() {
                           />
                       }
                   />
+                  <Route path="/completion" element={<CompletionScreen onQuestionnaire={() => window.location.href = '/conclusions'} />} />
+                  <Route path="/conclusions" element={<Conclusions />} />
               </Routes>
           </Router>
       </SurveyProvider>
