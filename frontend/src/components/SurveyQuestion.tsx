@@ -16,19 +16,16 @@ const SurveyQuestion: React.FC<SurveyQuestionProps> = ({ onNext, onPrevious, que
     const [selectedOption, setSelectedOption] = useState<string>('');
     const [numericInput, setNumericInput] = useState<number | undefined>();
 
-    useEffect(() => {
-        // Guarda la respuesta cada vez que cambia
-        if (questionType === 'options' && selectedOption) {
-            setAnswer(currentStep - 1, selectedOption);
-        } else if (questionType === 'numeric' && numericInput !== undefined) {
-            setAnswer(currentStep - 1, numericInput);
-        }
-    }, [selectedOption, numericInput, currentStep, questionType, setAnswer]);
-
     const handleNext = () => {
         if (questionType === 'options' && selectedOption) {
+            // Guardar la respuesta antes de avanzar a la siguiente pregunta
+            setAnswer(currentStep - 1, selectedOption);
+            console.log(`Respuesta para la pregunta ${currentStep}: ${selectedOption}`);
             onNext();
         } else if (questionType === 'numeric' && numericInput !== undefined) {
+            // Guardar la respuesta antes de avanzar a la siguiente pregunta
+            setAnswer(currentStep - 1, numericInput);
+            console.log(`Respuesta para la pregunta ${currentStep}: ${numericInput}`);
             onNext();
         } else {
             alert('Por favor, completa la respuesta antes de continuar.');

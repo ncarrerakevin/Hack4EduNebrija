@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSurvey } from '../context/SurveyContext';
+import ReactMarkdown from 'react-markdown';
 import './Conclusions.css'; // Importa el archivo de estilos
 
 const Conclusions = () => {
@@ -58,7 +59,7 @@ const Conclusions = () => {
                 <img src="/openai-logo.png" alt="OpenAI Logo" className="openai-logo" />
                 <h2>Perfil y Recomendaciones</h2>
             </div>
-            <p className="conclusions-text">{conclusions}</p>
+            <ReactMarkdown className="conclusions-text">{conclusions}</ReactMarkdown>
         </div>
     );
 };
