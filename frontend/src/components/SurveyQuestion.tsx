@@ -33,7 +33,13 @@ const SurveyQuestion: React.FC<SurveyQuestionProps> = ({ onNext, onPrevious, que
         } else {
             alert('Por favor, completa la respuesta antes de continuar.');
         }
+    
+        // Verifica si es la última pregunta para redirigir al final
+        if (currentStep === totalSteps) {
+            window.location.href = '/completion'; // Redirige al final
+        }
     };
+    
 
     return (
         <div className="survey-question-container">
