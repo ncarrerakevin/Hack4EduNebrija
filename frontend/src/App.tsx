@@ -8,13 +8,11 @@ import StudyingScreen from './components/StudyingScreen';
 import CompletionScreen from './components/CompletionScreen';
 import Login from './components/Login';
 import Register from './components/Register';
-import MindfulnessSupport from './components/MindfulnessSupport'; // Importa el nuevo componente
-
 import { useState } from 'react';
 
 function App() {
     const [currentStep, setCurrentStep] = useState(1);
-    const totalSteps = 5;
+    const totalSteps = 5; // Total de preguntas de la encuesta
 
     const questions = [
         { text: "En los momentos que debes dedicarte a la tarea académica (estudiar, deberes), ¿tienes conectados los dispositivos digitales?", type: 'options' },
@@ -61,7 +59,6 @@ function App() {
                 <Route path="/mindfulness-audio" element={<MindfulnessAudio onFinish={() => window.location.href = '/studying'} />} />
                 <Route path="/studying" element={<StudyingScreen onFinish={() => window.location.href = '/completion'} />} />
                 <Route path="/completion" element={<CompletionScreen onQuestionnaire={() => window.location.href = '/survey'} />} />
-                <Route path="/mindfulness-support" element={<MindfulnessSupport />} /> {/* Ruta para el soporte de Mindfulness */}
             </Routes>
         </Router>
     );
