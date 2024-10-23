@@ -9,9 +9,9 @@ import CompletionScreen from './components/CompletionScreen';
 import Login from './components/Login';
 import Register from './components/Register';
 import LikertQuestion from './components/LikertQuestion'; // Importa LikertQuestion
-import ShortMindfulnessProcess1 from './components/ShortMindfulnessProcess1'; // Importa ShortMindfulnessProcess1
-import ShortMindfulnessProcess2 from './components/ShortMindfulnessProcess2'; // Importa ShortMindfulnessProcess2
 import { useState } from 'react';
+import { SurveyProvider } from './context/SurveyContext'; // Importa el contexto
+import Conclusions from './components/Conclusions';
 
 // Define el tipo para 'options' y 'numeric'
 type QuestionType = 'options' | 'numeric';
@@ -22,11 +22,11 @@ function App() {
 
     // Lista de preguntas con el tipo correcto
     const questions = [
-        { text: "En los momentos que debes dedicarte a la tarea académica (estudiar, deberes), ¿tienes conectados los dispositivos digitales?", type: 'options' as QuestionType },
-        { text: "¿Con qué frecuencia revisas tus dispositivos digitales para ver notificaciones en los momentos de tarea académica?", type: 'numeric' as QuestionType },
-        { text: "¿Cómo dirías que te sientes cuando debes dejar de usar tus dispositivos electrónicos por un largo periodo de tiempo (por ejemplo, para estudiar)?", type: 'numeric' as QuestionType },
-        { text: "¿Cuánto tiempo sueles ser capaz de estar concentrado en la tarea antes de distraerte con dispositivos digitales?", type: 'numeric' as QuestionType },
-        { text: "¿Qué objetivo de concentración plena dedicado a la tarea te gustaría conseguir?", type: 'numeric' as QuestionType },
+        { text: "En los momentos que debes dedicarte a la tarea académica (estudiar, deberes), ¿tienes conectados los dispositivos digitales? ", type: 'options' as QuestionType },
+        { text: "¿Con qué frecuencia revisas tus dispositivos digitales en momentos académicos? (1-7)", type: 'numeric' as QuestionType },
+        { text: "¿Cómo dirías que te sientes cuando debes dejar de usar tus dispositivos electrónicos por un largo periodo de tiempo (por ejemplo, para estudiar)? (1-7)", type: 'numeric' as QuestionType },
+        { text: "¿Cuánto tiempo sueles ser capaz de estar concentrado en la tarea antes de distraerte con dispositivos digitales? (minutos de 0 a 120)", type: 'numeric' as QuestionType },
+        { text: "¿Qué objetivo de concentración plena dedicado a la tarea te gustaría conseguir? (minutos de 30 a 120)", type: 'numeric' as QuestionType },
     ];
 
     const handleNextQuestion = () => {
@@ -42,53 +42,48 @@ function App() {
     };
 
     return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<Navigate to="/login" />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/welcome" element={<Welcome onStart={() => window.location.href = '/survey-intro'} />} />
-                <Route path="/survey-intro" element={<SurveyIntro onStart={() => window.location.href = '/survey'} />} />
-                <Route
-                    path="/survey"
-                    element={
-                        <SurveyQuestion
-                            questionText={questions[currentStep - 1].text}
-                            currentStep={currentStep}
-                            totalSteps={totalSteps}
-                            questionType={questions[currentStep - 1].type}
-                            onNext={handleNextQuestion}
-                            onPrevious={handlePreviousQuestion}
-                        />
-                    }
-                />
-                <Route path="/mindfulness" element={<MindfulnessStart onStart={() => window.location.href = '/mindfulness-audio'} />} />
-                <Route path="/mindfulness-audio" element={<MindfulnessAudio onFinish={() => window.location.href = '/studying'} />} />
-                <Route path="/studying" element={<StudyingScreen onFinish={() => window.location.href = '/completion'} />} />
-                <Route path="/completion" element={<CompletionScreen onQuestionnaire={() => window.location.href = '/likert-question'} />} />
-                <Route
-                    path="/likert-question"
-                    element={
-                        <LikertQuestion
-                            questionText="Del 1 al 7, ¿cuánto de focalizada está tu atención en la tarea que vas a realizar?"
-                            currentStep={1}
-                            totalSteps={1}
-                            onNext={() => window.location.href = '/short-mindfulness'} // Navegar a la pantalla de Mindfulness corta
-                            onPrevious={() => {}}
-                        />
-                    }
-                />
-                <Route
-                    path="/short-mindfulness"
-                    element={<ShortMindfulnessProcess1 onNext={() => window.location.href = '/short-mindfulness-2'} />} // Aquí defines la navegación después de la primera fase
-                />
-                <Route
-                    path="/short-mindfulness-2"
-                    element={<ShortMindfulnessProcess2 onNext={() => window.location.href = '/mindfulness-audio'} />} // Segunda fase
-                />
-            </Routes>
-        </Router>
-    );
+      <SurveyProvider>
+          <Router>
+              <Routes>
+                  <Route path="/" element={<Navigate to="/login" />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/welcome" element={<Welcome onStart={() => window.location.href = '/survey-intro'} />} />
+                  <Route path="/survey-intro" element={<SurveyIntro onStart={() => window.location.href = '/survey'} />} />
+                  <Route
+                      path="/survey"
+                      element={
+                          <SurveyQuestion
+                              questionText={questions[currentStep - 1].text}
+                              currentStep={currentStep}
+                              totalSteps={totalSteps}
+                              questionType={questions[currentStep - 1].type}
+                              onNext={handleNextQuestion}
+                              onPrevious={handlePreviousQuestion}
+                          />
+                      }
+                  />
+                  <Route path="/mindfulness-start" element={<MindfulnessStart onStart={() => window.location.href = '/mindfulness-audio'} />} />
+                  <Route path="/mindfulness-audio" element={<MindfulnessAudio onFinish={() => window.location.href = '/studying'} />} />
+                  <Route path="/studying" element={<StudyingScreen onFinish={() => window.location.href = '/completion'} />} />
+                  <Route path="/completion" element={<CompletionScreen onQuestionnaire={() => window.location.href = '/likert-question'} />} />
+                  <Route
+                      path="/likert-question"
+                      element={
+                          <LikertQuestion
+                              questionText="Del 1 al 7, ¿cuánto de focalizada está tu atención en la tarea que vas a realizar?"
+                              currentStep={1}
+                              totalSteps={1}
+                              onNext={() => window.location.href = '/conclusions'} // Redirigir a conclusiones
+                              onPrevious={() => {}}
+                          />
+                      }
+                  />
+                  <Route path="/conclusions" element={<Conclusions />} />
+              </Routes>
+          </Router>
+      </SurveyProvider>
+  );
 }
 
 export default App;
