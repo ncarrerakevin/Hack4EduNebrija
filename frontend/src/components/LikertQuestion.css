@@ -1,0 +1,90 @@
+.likert-question-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw; /* Asegura que cubra todo el ancho de la pantalla */
+    background: linear-gradient(to bottom right, #e0f7fa, #fce4ec);
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.question-box {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 400px; /* Tamaño del cuadro */
+    text-align: center;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background-color: #e0e0e0;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.progress {
+    height: 100%;
+    background-color: #007BFF;
+    border-radius: 5px;
+}
+
+h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.likert-scale {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+}
+
+.likert-label {
+    font-size: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.likert-label input {
+    display: none;
+}
+
+.likert-label.selected {
+    background-color: #007BFF;
+    color: white;
+    border-radius: 50%;
+    padding: 10px;
+}
+
+.likert-legend {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 45%; /* Ajustar el tamaño de los botones */
+}
+
+button:hover {
+    background-color: #0056b3;
+}
