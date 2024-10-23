@@ -1,35 +1,67 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import Welcome from './components/Welcome';
+import SurveyIntro from './components/SurveyIntro';
+import SurveyQuestion from './components/SurveyQuestion';
+import MindfulnessStart from './components/MindfulnessStart'; // Importa la nueva pantalla
 
 function App() {
-  const [count, setCount] = useState(0)
+    const [showWelcome, setShowWelcome] = useState(true);
+    const [showSurveyIntro, setShowSurveyIntro] = useState(false);
+    const [showSurvey, setShowSurvey] = useState(false);
+    const [showMindfulnessStart, setShowMindfulnessStart] = useState(false); // Para mindfulness
+    const [currentStep, setCurrentStep] = useState(1);
+    const totalSteps = 5; // Total de preguntas
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    const questions = [
+        { text: "En los momentos que debes dedicarte a la tarea académica (estudiar, deberes), ¿tienes conectados los dispositivos digitales?", type: 'options' },
+        { text: "¿Con qué frecuencia revisas tus dispositivos digitales para ver notificaciones en los momentos de tarea académica?", type: 'numeric' },
+        { text: "¿Cómo dirías que te sientes cuando debes dejar de usar tus dispositivos electrónicos por un largo periodo de tiempo (por ejemplo, para estudiar)?", type: 'numeric' },
+        { text: "¿Cuánto tiempo sueles ser capaz de estar concentrado en la tarea antes de distraerte con dispositivos digitales?", type: 'numeric' },
+        { text: "¿Qué objetivo de concentración plena dedicado a la tarea te gustaría conseguir?", type: 'numeric' },
+    ];
+
+    const handleStart = () => {
+        setShowWelcome(false);
+        setShowSurveyIntro(true);
+    };
+
+    const handleSurveyIntroStart = () => {
+        setShowSurveyIntro(false);
+        setShowSurvey(true);
+    };
+
+    const handleNextQuestion = () => {
+        if (currentStep < totalSteps) {
+            setCurrentStep(currentStep + 1);
+        } else {
+            setShowSurvey(false); // Oculta la encuesta
+            setShowMindfulnessStart(true); // Muestra la pantalla de Mindfulness
+        }
+    };
+
+    const handlePreviousQuestion = () => {
+        if (currentStep > 1) {
+            setCurrentStep(currentStep - 1);
+        }
+    };
+
+    return (
+        <div>
+            {showWelcome && <Welcome onStart={handleStart} />}
+            {showSurveyIntro && <SurveyIntro onStart={handleSurveyIntroStart} />}
+            {showSurvey && (
+                <SurveyQuestion
+                    questionText={questions[currentStep - 1].text}
+                    currentStep={currentStep}
+                    totalSteps={totalSteps}
+                    questionType={questions[currentStep - 1].type}
+                    onNext={handleNextQuestion}
+                    onPrevious={handlePreviousQuestion}
+                />
+            )}
+            {showMindfulnessStart && <MindfulnessStart onStart={() => { /* Maneja el siguiente paso aquí */ }} />}
+        </div>
+    );
 }
 
-export default App
+export default App;

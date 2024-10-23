@@ -1,0 +1,81 @@
+.survey-question-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw; /* Asegura que cubra todo el ancho de la pantalla */
+    background: linear-gradient(to bottom right, #e0f7fa, #fce4ec);
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.question-box {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 400px; /* Tamaño del cuadro */
+    text-align: center;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background-color: #e0e0e0;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.progress {
+    height: 100%;
+    background-color: #007BFF;
+    border-radius: 5px;
+}
+
+h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.options {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin: 10px 0;
+    font-size: 1.2rem;
+}
+
+.numeric-input input {
+    width: 100px; /* Ajusta el tamaño del cuadro numérico */
+    padding: 10px; /* Espacio dentro del input */
+    font-size: 1.2rem; /* Tamaño del texto */
+    text-align: center; /* Centra el texto */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 45%; /* Ajustar el tamaño de los botones */
+}
+
+button:hover {
+    background-color: #0056b3;
+}
