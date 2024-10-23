@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './SurveyQuestion.css';
-import { useSurvey } from '../context/SurveyContext';
+import { useSurvey } from '../context/useSurvey';  // Ahora importas desde useSurvey.ts
 
 interface SurveyQuestionProps {
     onNext: () => void;
@@ -11,8 +11,8 @@ interface SurveyQuestionProps {
     questionType: 'options' | 'numeric';
 }
 
-const SurveyQuestion: React.FC<SurveyQuestionProps> = ({ onNext, onPrevious, questionText, currentStep, totalSteps, questionType }) => {
-    const { setAnswer, answers } = useSurvey(); // Obtén respuestas también
+const SurveyQuestion = ({ onNext, onPrevious, questionText, currentStep, totalSteps, questionType }: SurveyQuestionProps) => {
+    const { setAnswer, answers } = useSurvey();  // Accedemos al contexto aquí
     const [selectedOption, setSelectedOption] = useState<string>('');
     const [numericInput, setNumericInput] = useState<number | undefined>();
 
@@ -23,9 +23,7 @@ const SurveyQuestion: React.FC<SurveyQuestionProps> = ({ onNext, onPrevious, que
         } else if (questionType === 'numeric' && numericInput !== undefined) {
             setAnswer(currentStep - 1, numericInput.toString());
         }
-
-        // Imprime las respuestas almacenadas cada vez que se actualiza la respuesta
-        console.log(`Respuestas actuales: ${JSON.stringify(answers)}`);
+        console.log("Respuestas actuales:", answers);  // Imprime las respuestas para verificar
     }, [selectedOption, numericInput, currentStep, questionType, setAnswer, answers]);
 
     const handleNext = () => {
@@ -37,9 +35,10 @@ const SurveyQuestion: React.FC<SurveyQuestionProps> = ({ onNext, onPrevious, que
             alert('Por favor, completa la respuesta antes de continuar.');
         }
 
-        // Si es la última pregunta, redirige a mindfulness-start
         if (currentStep === totalSteps) {
-            window.location.href = '/mindfulness-start'; 
+            setTimeout(() => {
+                window.location.href = '/mindfulness-start'; // Redirige después de asegurarse de que las respuestas se guardan
+            }, 200); // Un pequeño retraso para asegurar que la respuesta se guarda antes de cambiar de ruta
         }
     };
 
@@ -98,3 +97,4 @@ const SurveyQuestion: React.FC<SurveyQuestionProps> = ({ onNext, onPrevious, que
 };
 
 export default SurveyQuestion;
+

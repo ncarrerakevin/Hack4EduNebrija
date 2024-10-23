@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useSurvey } from '../context/SurveyContext';
 import ReactMarkdown from 'react-markdown';
 import './Conclusions.css'; // Importa el archivo de estilos
+import { useSurvey } from '../context/useSurvey'; // Importa useSurvey
 
 const Conclusions = () => {
     const { questions, answers } = useSurvey();

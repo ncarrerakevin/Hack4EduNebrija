@@ -10,7 +10,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import LikertQuestion from './components/LikertQuestion'; // Importa LikertQuestion
 import { useState } from 'react';
-import { SurveyProvider } from './context/SurveyContext'; // Importa el contexto
+import { SurveyProvider } from './context/SurveyContext';
 import Conclusions from './components/Conclusions';
 
 // Define el tipo para 'options' y 'numeric'
