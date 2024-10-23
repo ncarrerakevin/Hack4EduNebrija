@@ -1,3 +1,4 @@
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useState } from 'react';
 import Welcome from './components/Welcome';
 import SurveyIntro from './components/SurveyIntro';
@@ -6,7 +7,8 @@ import MindfulnessStart from './components/MindfulnessStart';
 import MindfulnessAudio from './components/MindfulnessAudio';
 import StudyingScreen from './components/StudyingScreen';
 import CompletionScreen from './components/CompletionScreen';
-import LikertQuestion from './components/LikertQuestion';  // Importa la nueva pantalla
+import Login from './components/Login'; // Agregar Login
+import Register from './components/Register'; // Agregar Register
 
 function App() {
     const [showWelcome, setShowWelcome] = useState(true);
@@ -15,12 +17,12 @@ function App() {
     const [showMindfulnessStart, setShowMindfulnessStart] = useState(false);
     const [showMindfulnessAudio, setShowMindfulnessAudio] = useState(false);
     const [showStudyingScreen, setShowStudyingScreen] = useState(false);
-    const [showCompletionScreen, setShowCompletionScreen] = useState(false);
-    const [showLikertQuestion, setShowLikertQuestion] = useState(false);  // Estado para la pantalla Likert
+    const [showCompletionScreen, setShowCompletionScreen] = useState(false); // Añade el estado para la pantalla de finalización
 
     const [currentStep, setCurrentStep] = useState(1);
     const totalSteps = 5;
 
+    // Preguntas del cuestionario
     const questions = [
         { text: "En los momentos que debes dedicarte a la tarea académica (estudiar, deberes), ¿tienes conectados los dispositivos digitales?", type: 'options' },
         { text: "¿Con qué frecuencia revisas tus dispositivos digitales para ver notificaciones en los momentos de tarea académica?", type: 'numeric' },
@@ -29,16 +31,7 @@ function App() {
         { text: "¿Qué objetivo de concentración plena dedicado a la tarea te gustaría conseguir?", type: 'numeric' },
     ];
 
-    const handleStart = () => {
-        setShowWelcome(false);
-        setShowSurveyIntro(true);
-    };
-
-    const handleSurveyIntroStart = () => {
-        setShowSurveyIntro(false);
-        setShowSurvey(true);
-    };
-
+    // Avanzar y retroceder en las preguntas del cuestionario
     const handleNextQuestion = () => {
         if (currentStep < totalSteps) {
             setCurrentStep(currentStep + 1);
@@ -65,13 +58,12 @@ function App() {
     };
 
     const handleFinishStudy = () => {
-        setShowStudyingScreen(false);
-        setShowCompletionScreen(true);
+        setShowStudyingScreen(false); // Oculta la pantalla de "Estudiando"
+        setShowCompletionScreen(true); // Muestra la pantalla de finalización
     };
 
-    const handleQuestionnaireStart = () => {
-        setShowCompletionScreen(false);
-        setShowLikertQuestion(true);  // Muestra la pantalla Likert
+    const handleQuestionnaire = () => {
+        alert("Inicia el cuestionario!"); // Acción para iniciar el cuestionario
     };
 
     return (
@@ -91,8 +83,7 @@ function App() {
             {showMindfulnessStart && <MindfulnessStart onStart={handleStartMindfulnessAudio} />}
             {showMindfulnessAudio && <MindfulnessAudio onFinish={handleAudioEnd} />}
             {showStudyingScreen && <StudyingScreen onFinish={handleFinishStudy} />}
-            {showCompletionScreen && <CompletionScreen onQuestionnaire={handleQuestionnaireStart} />}
-            {showLikertQuestion && <LikertQuestion onNext={() => alert('Cuestionario completado')} />}  {/* Muestra la escala Likert */}
+            {showCompletionScreen && <CompletionScreen onQuestionnaire={handleQuestionnaire} />}
         </div>
     );
 }
