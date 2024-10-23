@@ -59,7 +59,7 @@ function App() {
                         />
                     }
                 />
-                <Route path="/mindfulness" element={<MindfulnessStart onStart={() => window.location.href = '/mindfulness-audio'} />} />
+                <Route path="/mindfulness-start" element={<MindfulnessStart onStart={() => window.location.href = '/mindfulness-audio'} />} />
                 <Route path="/mindfulness-audio" element={<MindfulnessAudio onFinish={() => window.location.href = '/studying'} />} />
                 <Route path="/studying" element={<StudyingScreen onFinish={() => window.location.href = '/completion'} />} />
                 <Route path="/completion" element={<CompletionScreen onQuestionnaire={() => window.location.href = '/survey'} />} />

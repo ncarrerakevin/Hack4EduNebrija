@@ -34,9 +34,9 @@ const SurveyQuestion: React.FC<SurveyQuestionProps> = ({ onNext, onPrevious, que
             alert('Por favor, completa la respuesta antes de continuar.');
         }
     
-        // Verifica si es la última pregunta para redirigir al final
+        // Si es la última pregunta, redirige a mindfulness-start
         if (currentStep === totalSteps) {
-            window.location.href = '/completion'; // Redirige al final
+            window.location.href = '/mindfulness-start'; 
         }
     };
     
