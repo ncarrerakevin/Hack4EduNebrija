@@ -1,17 +1,17 @@
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useState } from 'react';
 import Welcome from './components/Welcome';
 import SurveyIntro from './components/SurveyIntro';
 import SurveyQuestion from './components/SurveyQuestion';
-import MindfulnessStart from './components/MindfulnessStart'; // Importa la nueva pantalla
+import MindfulnessStart from './components/MindfulnessStart';
+import Login from './components/Login'; // Agregar Login
+import Register from './components/Register'; // Agregar Register
 
 function App() {
-    const [showWelcome, setShowWelcome] = useState(true);
-    const [showSurveyIntro, setShowSurveyIntro] = useState(false);
-    const [showSurvey, setShowSurvey] = useState(false);
-    const [showMindfulnessStart, setShowMindfulnessStart] = useState(false); // Para mindfulness
     const [currentStep, setCurrentStep] = useState(1);
-    const totalSteps = 5; // Total de preguntas
+    const totalSteps = 5; // Total de preguntas de la encuesta
 
+    // Preguntas del cuestionario
     const questions = [
         { text: "En los momentos que debes dedicarte a la tarea académica (estudiar, deberes), ¿tienes conectados los dispositivos digitales?", type: 'options' },
         { text: "¿Con qué frecuencia revisas tus dispositivos digitales para ver notificaciones en los momentos de tarea académica?", type: 'numeric' },
@@ -20,22 +20,10 @@ function App() {
         { text: "¿Qué objetivo de concentración plena dedicado a la tarea te gustaría conseguir?", type: 'numeric' },
     ];
 
-    const handleStart = () => {
-        setShowWelcome(false);
-        setShowSurveyIntro(true);
-    };
-
-    const handleSurveyIntroStart = () => {
-        setShowSurveyIntro(false);
-        setShowSurvey(true);
-    };
-
+    // Avanzar y retroceder en las preguntas del cuestionario
     const handleNextQuestion = () => {
         if (currentStep < totalSteps) {
             setCurrentStep(currentStep + 1);
-        } else {
-            setShowSurvey(false); // Oculta la encuesta
-            setShowMindfulnessStart(true); // Muestra la pantalla de Mindfulness
         }
     };
 
@@ -46,21 +34,29 @@ function App() {
     };
 
     return (
-        <div>
-            {showWelcome && <Welcome onStart={handleStart} />}
-            {showSurveyIntro && <SurveyIntro onStart={handleSurveyIntroStart} />}
-            {showSurvey && (
-                <SurveyQuestion
-                    questionText={questions[currentStep - 1].text}
-                    currentStep={currentStep}
-                    totalSteps={totalSteps}
-                    questionType={questions[currentStep - 1].type}
-                    onNext={handleNextQuestion}
-                    onPrevious={handlePreviousQuestion}
+        <Router>
+            <Routes>
+                <Route path="/" element={<Navigate to="/login" />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/welcome" element={<Welcome onStart={() => window.location.href = '/survey-intro'} />} />
+                <Route path="/survey-intro" element={<SurveyIntro onStart={() => window.location.href = '/survey'} />} />
+                <Route
+                    path="/survey"
+                    element={
+                        <SurveyQuestion
+                            questionText={questions[currentStep - 1].text}
+                            currentStep={currentStep}
+                            totalSteps={totalSteps}
+                            questionType={questions[currentStep - 1].type}
+                            onNext={handleNextQuestion}
+                            onPrevious={handlePreviousQuestion}
+                        />
+                    }
                 />
-            )}
-            {showMindfulnessStart && <MindfulnessStart onStart={() => { /* Maneja el siguiente paso aquí */ }} />}
-        </div>
+                <Route path="/mindfulness" element={<MindfulnessStart onStart={() => alert("Iniciando mindfulness...")} />} />
+            </Routes>
+        </Router>
     );
 }
 
