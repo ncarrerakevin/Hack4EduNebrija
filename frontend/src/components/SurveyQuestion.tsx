@@ -12,27 +12,35 @@ interface SurveyQuestionProps {
 }
 
 const SurveyQuestion: React.FC<SurveyQuestionProps> = ({ onNext, onPrevious, questionText, currentStep, totalSteps, questionType }) => {
-    const { setAnswer, answers } = useSurvey(); // Traer respuestas también para depurar
-    const [answer, setLocalAnswer] = useState<string>(''); // Almacenar la respuesta localmente
+    const { setAnswer, answers } = useSurvey(); // Obtén respuestas también
+    const [selectedOption, setSelectedOption] = useState<string>('');
+    const [numericInput, setNumericInput] = useState<number | undefined>();
 
     useEffect(() => {
-        // Cuando se monta el componente, prellena con la respuesta existente (si la hay)
-        setLocalAnswer(answers[currentStep - 1] || '');
-    }, [answers, currentStep]);
+        // Guarda la respuesta cada vez que cambia
+        if (questionType === 'options' && selectedOption) {
+            setAnswer(currentStep - 1, selectedOption);
+        } else if (questionType === 'numeric' && numericInput !== undefined) {
+            setAnswer(currentStep - 1, numericInput.toString());
+        }
+
+        // Imprime las respuestas almacenadas cada vez que se actualiza la respuesta
+        console.log(`Respuestas actuales: ${JSON.stringify(answers)}`);
+    }, [selectedOption, numericInput, currentStep, questionType, setAnswer, answers]);
 
     const handleNext = () => {
-        // Guardar la respuesta en el contexto cuando se pasa a la siguiente pregunta
-        setAnswer(currentStep - 1, answer);
-        onNext();
-
-        if(currentStep === totalSteps) {
-            console.log('Respuestas:', answers);
-            window.location.href = '/mindfulness-start'; // Redirige a la pantalla de conclusiones
+        if (questionType === 'options' && selectedOption) {
+            onNext();
+        } else if (questionType === 'numeric' && numericInput !== undefined) {
+            onNext();
+        } else {
+            alert('Por favor, completa la respuesta antes de continuar.');
         }
-    };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setLocalAnswer(e.target.value);
+        // Si es la última pregunta, redirige a mindfulness-start
+        if (currentStep === totalSteps) {
+            window.location.href = '/mindfulness-start'; 
+        }
     };
 
     return (
@@ -52,8 +60,8 @@ const SurveyQuestion: React.FC<SurveyQuestionProps> = ({ onNext, onPrevious, que
                             <input
                                 type="radio"
                                 value="Sí"
-                                checked={answer === 'Sí'}
-                                onChange={handleChange}
+                                checked={selectedOption === 'Sí'}
+                                onChange={(e) => setSelectedOption(e.target.value)}
                             />
                             Sí
                         </label>
@@ -61,8 +69,8 @@ const SurveyQuestion: React.FC<SurveyQuestionProps> = ({ onNext, onPrevious, que
                             <input
                                 type="radio"
                                 value="No"
-                                checked={answer === 'No'}
-                                onChange={handleChange}
+                                checked={selectedOption === 'No'}
+                                onChange={(e) => setSelectedOption(e.target.value)}
                             />
                             No
                         </label>
@@ -73,8 +81,8 @@ const SurveyQuestion: React.FC<SurveyQuestionProps> = ({ onNext, onPrevious, que
                     <div className="numeric-input">
                         <input
                             type="number"
-                            value={answer}
-                            onChange={handleChange}
+                            value={numericInput || ''}
+                            onChange={(e) => setNumericInput(parseInt(e.target.value, 10))}
                             placeholder="Introduce un número"
                         />
                     </div>
