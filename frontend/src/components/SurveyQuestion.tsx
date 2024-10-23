@@ -24,7 +24,13 @@ const SurveyQuestion = ({ onNext, onPrevious, questionText, currentStep, totalSt
         } else {
             alert('Por favor, completa la respuesta antes de continuar.');
         }
+    
+        // Verifica si es la última pregunta para redirigir al final
+        if (currentStep === totalSteps) {
+            window.location.href = '/completion'; // Redirige al final
+        }
     };
+    
 
     return (
         <div className="survey-question-container">
