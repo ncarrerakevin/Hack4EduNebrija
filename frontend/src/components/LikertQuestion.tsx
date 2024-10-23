@@ -3,7 +3,7 @@ import './LikertQuestion.css';
 
 interface LikertQuestionProps {
     onNext: () => void;
-    onPrevious: () => void;
+    onPrevious?: () => void; // Hacerlo opcional
     questionText: string;
     currentStep: number;
     totalSteps: number;
