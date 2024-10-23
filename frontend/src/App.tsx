@@ -2,15 +2,17 @@ import { useState } from 'react';
 import Welcome from './components/Welcome';
 import SurveyIntro from './components/SurveyIntro';
 import SurveyQuestion from './components/SurveyQuestion';
-import MindfulnessStart from './components/MindfulnessStart'; // Importa la nueva pantalla
+import MindfulnessStart from './components/MindfulnessStart';
+import MindfulnessAudio from './components/MindfulnessAudio'; // Importa el reproductor de audio
 
 function App() {
     const [showWelcome, setShowWelcome] = useState(true);
     const [showSurveyIntro, setShowSurveyIntro] = useState(false);
     const [showSurvey, setShowSurvey] = useState(false);
-    const [showMindfulnessStart, setShowMindfulnessStart] = useState(false); // Para mindfulness
+    const [showMindfulnessStart, setShowMindfulnessStart] = useState(false);
+    const [showMindfulnessAudio, setShowMindfulnessAudio] = useState(false); // Añade el estado para el reproductor de audio
     const [currentStep, setCurrentStep] = useState(1);
-    const totalSteps = 5; // Total de preguntas
+    const totalSteps = 5;
 
     const questions = [
         { text: "En los momentos que debes dedicarte a la tarea académica (estudiar, deberes), ¿tienes conectados los dispositivos digitales?", type: 'options' },
@@ -45,6 +47,12 @@ function App() {
         }
     };
 
+    // Maneja el inicio del audio después de la pantalla de Mindfulness Start
+    const handleStartMindfulnessAudio = () => {
+        setShowMindfulnessStart(false); // Oculta la pantalla de inicio de mindfulness
+        setShowMindfulnessAudio(true); // Muestra el reproductor de audio
+    };
+
     return (
         <div>
             {showWelcome && <Welcome onStart={handleStart} />}
@@ -59,7 +67,8 @@ function App() {
                     onPrevious={handlePreviousQuestion}
                 />
             )}
-            {showMindfulnessStart && <MindfulnessStart onStart={() => { /* Maneja el siguiente paso aquí */ }} />}
+            {showMindfulnessStart && <MindfulnessStart onStart={handleStartMindfulnessAudio} />}
+            {showMindfulnessAudio && <MindfulnessAudio />} {/* Muestra el reproductor de audio */}
         </div>
     );
 }
