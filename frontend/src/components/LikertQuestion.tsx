@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './LikertQuestion.css';
+import { useNavigate } from 'react-router-dom'; 
 
 interface LikertQuestionProps {
     onNext: () => void;
@@ -11,6 +12,7 @@ interface LikertQuestionProps {
 
 const LikertQuestion: React.FC<LikertQuestionProps> = ({ onNext, onPrevious, questionText, currentStep, totalSteps }) => {
     const [selectedOption, setSelectedOption] = useState<number | undefined>();
+    const navigate = useNavigate(); // Hook para navegación
 
     const handleOptionChange = (value: number) => {
         setSelectedOption(value);
@@ -20,6 +22,12 @@ const LikertQuestion: React.FC<LikertQuestionProps> = ({ onNext, onPrevious, que
         if (selectedOption !== undefined) {
             console.log('Respuesta seleccionada:', selectedOption);
             onNext();
+
+            if (currentStep === totalSteps) {
+                navigate('/conclusions');
+            } else {
+                onNext();
+            }
         } else {
             alert('Por favor, selecciona una opción antes de continuar.');
         }
