@@ -10,6 +10,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import LikertQuestion from './components/LikertQuestion'; // Importa LikertQuestion
 import { useState } from 'react';
+import { SurveyProvider } from './context/SurveyContext'; // Importa el contexto
 
 // Define el tipo para 'options' y 'numeric'
 type QuestionType = 'options' | 'numeric';
@@ -40,45 +41,47 @@ function App() {
     };
 
     return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<Navigate to="/login" />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/welcome" element={<Welcome onStart={() => window.location.href = '/survey-intro'} />} />
-                <Route path="/survey-intro" element={<SurveyIntro onStart={() => window.location.href = '/survey'} />} />
-                <Route
-                    path="/survey"
-                    element={
-                        <SurveyQuestion
-                            questionText={questions[currentStep - 1].text}
-                            currentStep={currentStep}
-                            totalSteps={totalSteps}
-                            questionType={questions[currentStep - 1].type}
-                            onNext={handleNextQuestion}
-                            onPrevious={handlePreviousQuestion}
-                        />
-                    }
-                />
-                <Route path="/mindfulness-start" element={<MindfulnessStart onStart={() => window.location.href = '/mindfulness-audio'} />} />
-                <Route path="/mindfulness-audio" element={<MindfulnessAudio onFinish={() => window.location.href = '/studying'} />} />
-                <Route path="/studying" element={<StudyingScreen onFinish={() => window.location.href = '/completion'} />} />
-                <Route path="/completion" element={<CompletionScreen onQuestionnaire={() => window.location.href = '/likert-question'} />} />
-                <Route
-                    path="/likert-question"
-                    element={
-                        <LikertQuestion
-                            questionText="Del 1 al 7, ¿cuánto de focalizada está tu atención en la tarea que vas a realizar?"
-                            currentStep={1}
-                            totalSteps={1}
-                            onNext={() => alert('¡Siguiente!')} // Ajusta el comportamiento de "Siguiente" aquí
-                            onPrevious={() => {}} // Pasa una función vacía si no la necesitas
-                        />
-                    }
-                />
-            </Routes>
-        </Router>
-    );
+      <SurveyProvider>
+          <Router>
+              <Routes>
+                  <Route path="/" element={<Navigate to="/login" />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/welcome" element={<Welcome onStart={() => window.location.href = '/survey-intro'} />} />
+                  <Route path="/survey-intro" element={<SurveyIntro onStart={() => window.location.href = '/survey'} />} />
+                  <Route
+                      path="/survey"
+                      element={
+                          <SurveyQuestion
+                              questionText={questions[currentStep - 1].text}
+                              currentStep={currentStep}
+                              totalSteps={totalSteps}
+                              questionType={questions[currentStep - 1].type}
+                              onNext={handleNextQuestion}
+                              onPrevious={handlePreviousQuestion}
+                          />
+                      }
+                  />
+                  <Route path="/mindfulness-start" element={<MindfulnessStart onStart={() => window.location.href = '/mindfulness-audio'} />} />
+                  <Route path="/mindfulness-audio" element={<MindfulnessAudio onFinish={() => window.location.href = '/studying'} />} />
+                  <Route path="/studying" element={<StudyingScreen onFinish={() => window.location.href = '/completion'} />} />
+                  <Route path="/completion" element={<CompletionScreen onQuestionnaire={() => window.location.href = '/likert-question'} />} />
+                  <Route
+                      path="/likert-question"
+                      element={
+                          <LikertQuestion
+                              questionText="Del 1 al 7, ¿cuánto de focalizada está tu atención en la tarea que vas a realizar?"
+                              currentStep={1}
+                              totalSteps={1}
+                              onNext={() => alert('¡Siguiente!')}
+                              onPrevious={() => {}}
+                          />
+                      }
+                  />
+              </Routes>
+          </Router>
+      </SurveyProvider>
+  );
 }
 
 export default App;
