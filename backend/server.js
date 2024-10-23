@@ -3,6 +3,7 @@ const axios = require('axios');
 const app = express();
 const cors = require('cors'); // Importa el paquete cors
 const port = 5000; // Puerto para el servidor backend
+require('dotenv').config(); // Carga las variables de entorno del archivo .env
 
 // Habilita CORS para todas las rutas
 app.use(cors());
@@ -21,7 +22,7 @@ app.post('/api/openai', async (req, res) => {
             ]
         }, {
             headers: {
-                'Authorization': `Bearer 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`, // Usa tu API Key
+                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
                 'Content-Type': 'application/json'
             }
         });
