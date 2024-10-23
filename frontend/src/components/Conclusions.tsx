@@ -8,12 +8,16 @@ const Conclusions = () => {
     const [conclusions, setConclusions] = useState<string>(''); 
 
     useEffect(() => {
+
         const fetchConclusions = async () => {
+
+            console.log("Preguntas:", questions);
+            console.log("Respuestas:", answers);
             // Mejora del prompt para generar el perfil del estudiante con emojis, recomendaciones y motivación
             const prompt = `
                 Basado en las siguientes preguntas y respuestas del estudiante:
 
-                ${questions.map((q, i) => `Pregunta: ${q}\nRespuesta: ${answers[i]}\n`).join('\n')}
+                ${questions.map((q: string, i: number) => `Pregunta: ${q}\nRespuesta: ${answers[i]}\n`).join('\n')}
 
                 Evalúa las respuestas y asigna uno de los siguientes perfiles al estudiante con emojis, incluyendo 1 o 2 recomendaciones específicas para mejorar su concentración, y una frase motivacional al final:
 

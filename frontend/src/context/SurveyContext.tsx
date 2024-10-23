@@ -1,48 +1,47 @@
-import { createContext, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-// Define la estructura de las preguntas y respuestas
 interface SurveyContextType {
     questions: string[];
-    answers: (string | number)[];
-    setAnswer: (questionIndex: number, answer: string | number) => void;
+    answers: string[]; // Todas las respuestas serán de tipo string
+    setAnswer: (index: number, answer: string) => void;
 }
 
-// Crea el contexto
 const SurveyContext = createContext<SurveyContextType | undefined>(undefined);
 
-// Proveedor de contexto que manejará preguntas y respuestas
-export const SurveyProvider = ({ children }: { children: ReactNode }) => {
-    // Almacena preguntas
-    const questions = [
+interface SurveyProviderProps {
+    children: ReactNode; // Aquí definimos que el componente recibirá children de tipo ReactNode
+}
+
+export const SurveyProvider: React.FC<SurveyProviderProps> = ({ children }) => {
+    const [questions] = useState([
         "¿Tienes conectados los dispositivos digitales mientras estudias? (Sí/No)",
         "¿Con qué frecuencia revisas tus dispositivos digitales en momentos académicos? (1-7)",
         "¿Cómo te sientes al dejar de usar dispositivos electrónicos por mucho tiempo? (1-7)",
         "¿Cuánto tiempo puedes concentrarte antes de distraerte con dispositivos digitales? (minutos de 0 a 120)",
-        "¿Qué objetivo de concentración plena te gustaría alcanzar? (minutos de 30 a 120)"
-    ];
+        "¿Qué objetivo de concentración plena te gustaría alcanzar? (minutos de 30 a 120)",
+    ]);
 
-    // Estado para almacenar las respuestas
-    const [answers, setAnswers] = useState<(string | number)[]>(new Array(questions.length).fill(""));
+    const [answers, setAnswers] = useState<string[]>(Array(questions.length).fill(""));
 
-    // Función para actualizar las respuestas
-    const setAnswer = (questionIndex: number, answer: string | number) => {
-        const newAnswers = [...answers];
-        newAnswers[questionIndex] = answer;
-        setAnswers(newAnswers);
+    const setAnswer = (index: number, answer: string) => {
+        setAnswers(prevAnswers => {
+            const newAnswers = [...prevAnswers];
+            newAnswers[index] = answer;
+            return newAnswers;
+        });
     };
 
     return (
         <SurveyContext.Provider value={{ questions, answers, setAnswer }}>
-            {children}
+            {children} {/* Asegúrate de renderizar los children */}
         </SurveyContext.Provider>
     );
 };
 
-// Hook para usar el contexto en otros componentes
-export const useSurvey = () => {
+export const useSurvey = (): SurveyContextType => {
     const context = useContext(SurveyContext);
     if (!context) {
-        throw new Error('useSurvey debe ser utilizado dentro de un SurveyProvider');
+        throw new Error('useSurvey must be used within a SurveyProvider');
     }
     return context;
 };

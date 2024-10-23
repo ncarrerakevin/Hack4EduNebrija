@@ -12,29 +12,27 @@ interface SurveyQuestionProps {
 }
 
 const SurveyQuestion: React.FC<SurveyQuestionProps> = ({ onNext, onPrevious, questionText, currentStep, totalSteps, questionType }) => {
-    const { setAnswer } = useSurvey();
-    const [selectedOption, setSelectedOption] = useState<string>('');
-    const [numericInput, setNumericInput] = useState<number | undefined>();
+    const { setAnswer, answers } = useSurvey(); // Traer respuestas también para depurar
+    const [answer, setLocalAnswer] = useState<string>(''); // Almacenar la respuesta localmente
+
+    useEffect(() => {
+        // Cuando se monta el componente, prellena con la respuesta existente (si la hay)
+        setLocalAnswer(answers[currentStep - 1] || '');
+    }, [answers, currentStep]);
 
     const handleNext = () => {
-        if (questionType === 'options' && selectedOption) {
-            // Guardar la respuesta antes de avanzar a la siguiente pregunta
-            setAnswer(currentStep - 1, selectedOption);
-            console.log(`Respuesta para la pregunta ${currentStep}: ${selectedOption}`);
-            onNext();
-        } else if (questionType === 'numeric' && numericInput !== undefined) {
-            // Guardar la respuesta antes de avanzar a la siguiente pregunta
-            setAnswer(currentStep - 1, numericInput);
-            console.log(`Respuesta para la pregunta ${currentStep}: ${numericInput}`);
-            onNext();
-        } else {
-            alert('Por favor, completa la respuesta antes de continuar.');
-        }
+        // Guardar la respuesta en el contexto cuando se pasa a la siguiente pregunta
+        setAnswer(currentStep - 1, answer);
+        onNext();
 
-        // Si es la última pregunta, redirige a mindfulness-start
-        if (currentStep === totalSteps) {
-            window.location.href = '/mindfulness-start'; 
+        if(currentStep === totalSteps) {
+            console.log('Respuestas:', answers);
+            window.location.href = '/mindfulness-start'; // Redirige a la pantalla de conclusiones
         }
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setLocalAnswer(e.target.value);
     };
 
     return (
@@ -54,8 +52,8 @@ const SurveyQuestion: React.FC<SurveyQuestionProps> = ({ onNext, onPrevious, que
                             <input
                                 type="radio"
                                 value="Sí"
-                                checked={selectedOption === 'Sí'}
-                                onChange={(e) => setSelectedOption(e.target.value)}
+                                checked={answer === 'Sí'}
+                                onChange={handleChange}
                             />
                             Sí
                         </label>
@@ -63,8 +61,8 @@ const SurveyQuestion: React.FC<SurveyQuestionProps> = ({ onNext, onPrevious, que
                             <input
                                 type="radio"
                                 value="No"
-                                checked={selectedOption === 'No'}
-                                onChange={(e) => setSelectedOption(e.target.value)}
+                                checked={answer === 'No'}
+                                onChange={handleChange}
                             />
                             No
                         </label>
@@ -75,8 +73,8 @@ const SurveyQuestion: React.FC<SurveyQuestionProps> = ({ onNext, onPrevious, que
                     <div className="numeric-input">
                         <input
                             type="number"
-                            value={numericInput || ''}
-                            onChange={(e) => setNumericInput(parseInt(e.target.value, 10))}
+                            value={answer}
+                            onChange={handleChange}
                             placeholder="Introduce un número"
                         />
                     </div>
